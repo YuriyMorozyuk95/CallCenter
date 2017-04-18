@@ -1,0 +1,151 @@
+﻿<Window x:Class="CallCenter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:CallCenter.Converters"
+        x:Name="Window"
+        Title="CallCenter" Height="500" Width="800">
+
+    <Window.Resources>
+        <converters:ImageStatusConverter x:Key="ImageStatusConverter" />
+        <converters:IntegerMoneyConverter x:Key="IntegerMoneyConverter" />
+        <converters:ImageSexConverter x:Key="ImageSexConverter" />
+        <converters:ImageClientStatusConverter x:Key="ImageClientStatusConverter" />
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ListBox Grid.Column="0" Grid.Row="0" ItemsSource="{Binding ElementName=Window, Path=Support.Operators}">
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="5" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Blue" BorderThickness="2" Padding="5">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="10" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                                <Image
+                                    Source="{Binding Path=OperatorSex, Converter={StaticResource ImageSexConverter}}"
+                                    Width="48" Height="48" />
+                                <StackPanel Margin="5,0,0,0">
+                                    <TextBlock Text="{Binding Path=Name}" FontSize="20" />
+                                    <TextBlock Text="{Binding Path=OperatorId}" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
+                                <TextBlock Text="Salary:" />
+                                <TextBlock
+                                    Text="{Binding Path=Salary, Converter={StaticResource IntegerMoneyConverter}}"
+                                    Margin="10,0,0,0" />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+                                <TextBlock Text="Status:" VerticalAlignment="Center" />
+                                <Image Source="{Binding Path=Status, Converter={StaticResource ImageStatusConverter}}"
+                                       Width="24"
+                                       Height="24" Margin="5,0,0,0" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Grid.Column="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Client ID:" />
+                                    <TextBlock Text="{Binding Path=CurrentClientId}" Margin="10,0,0,0" />
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Session time:" />
+                                    <TextBlock Text="{Binding Path=SessionTime}" Margin="10,0,0,0" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <ListBox Grid.Column="2" Grid.Row="0" ItemsSource="{Binding ElementName=Window, Path=Support.Clients}"
+                 SelectedItem="{Binding ElementName=Window, Path=SelectedClient, Mode=OneWayToSource}">
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="5" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Orange" BorderThickness="2" Padding="5">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="10" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="150" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0">
+                                <TextBlock Text="{Binding Path=Name}" FontSize="20" />
+                                <TextBlock Text="{Binding Path=ClientId}" />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" />
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+                                <TextBlock Text="Status:" VerticalAlignment="Center" />
+                                <Image Source="{Binding Path=Status, Converter={StaticResource ImageClientStatusConverter}}" Width="24" Height="24" Margin="5,0,0,0" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Grid.Column="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Operator ID:" />
+                                    <TextBlock Text="{Binding Path=CurrentOperatorId}" Margin="10,0,0,0" />
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Session time:" />
+                                    <TextBlock Text="{Binding Path=SessionTime}" Margin="10,0,0,0" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2" Margin="0,5,0,5" HorizontalAlignment="Right">
+            <Button Content="Terminate" x:Name="TerminateButton" Width="100" Height="25" Margin="0,0,10,0" />
+            <Button Content="Make Call" x:Name="MakeCallButton" Width="100" Height="25" />
+        </StackPanel>
+        
+
+    </Grid>
+</Window>
